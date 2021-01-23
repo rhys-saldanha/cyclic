@@ -14,10 +14,10 @@
 
 > routing
 
-- [ ] calendar view (default)
-- [ ] detail list
-- [ ] create Activity
-- [ ] create Event
+- [x] calendar view (default)
+- [x] detail list
+- [x] create Activity
+- [x] create Event
 
 ## v0.3
 
