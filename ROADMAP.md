@@ -8,7 +8,7 @@
 
 - [x] github repo
 - [x] buildable
-- [ ] connect Netlify CI to `main`
+- [x] connect Netlify CI to `main`
 
 ## v0.2
 
