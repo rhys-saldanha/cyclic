@@ -1,15 +1,22 @@
 import React from 'react';
-import {useRecoilValue} from 'recoil';
+import {useRecoilState} from 'recoil';
 import * as state from './state/state';
 import Button from '@material-ui/core/Button';
 
 function App() {
-    const activities = useRecoilValue(state.activities);
+    const [activities, setActivities] = useRecoilState(state.activities);
+
+    const onClick = () => {
+        setActivities([1, 2, 3]);
+    };
 
     return (
-        <Button variant="contained" color="primary">
-            Hello World
-        </Button>
+        <>
+            {activities}
+            <Button variant="contained" color="primary" onClick={onClick}>
+                Hello World
+            </Button>
+        </>
     );
 }
 

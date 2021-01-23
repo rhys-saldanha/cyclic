@@ -6,5 +6,7 @@ interface Activity {
 
 export const activities = atom<Activity[]>({
     key: 'activities',
-    default: []
+    default: [],
+    // @ts-ignore
+    persistence_UNSTABLE: {type: true},
 });
