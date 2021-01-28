@@ -1,12 +1,30 @@
 import {atom} from 'recoil';
 
-interface Activity {
-
+export interface Activity {
+    id: string
+    name: string
 }
 
-export const activities = atom<Activity[]>({
+export interface Event {
+    id: string
+    activityId: string
+    date: string
+}
+
+const activities = atom<Activity[]>({
     key: 'activities',
     default: [],
     // @ts-ignore
     persistence_UNSTABLE: {type: true},
 });
+
+const events = atom<Event[]>({
+    key: 'events',
+    default: [],
+    // @ts-ignore
+    persistence_UNSTABLE: {type: true},
+});
+
+export const state = {
+    activities, events
+};
