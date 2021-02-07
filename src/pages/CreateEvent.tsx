@@ -1,32 +1,38 @@
-import {useRecoilState, useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {Event, state} from '../state/state';
 import React, {useState} from 'react';
 import {v4 as uuid} from 'uuid';
-import {useHistory} from 'react-router-dom';
-import {onChange} from '../state/utils';
+import {onChange, useSubmit} from '../state/utils';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const CreateEvent = () => {
-    const [events, setEvents] = useRecoilState(state.events);
+    const setEvents = useSetRecoilState(state.events);
     const [event, setEvent] = useState<Event>({
         id: uuid(),
         activityId: '',
         date: new Date().toISOString().substring(0, 10)
     });
     const activities = useRecoilValue(state.activities);
-    const history = useHistory();
+    const submit = useSubmit(setEvents);
 
     const activityOptions = activities.map((activity) => {
         return <option value={activity.id}>{activity.name}</option>;
     });
 
-    const submit = () => {
-        setEvents([...events, event]);
-        history.push('/');
+    const convertDate = (date: Date) => {
+        return date.toISOString().substring(0, 10);
     };
 
-    const formatDate = (date: string) => {
-        return new Date(date).toISOString().substring(0, 10);
+    const isValid = (event: Event) => {
+        return event.activityId;
     };
+
+    const onDateChange = (date: Date) => setEvent((previous) => ({
+        ...previous,
+        date: convertDate(date)
+    }));
 
     return (
         <>
@@ -34,20 +40,18 @@ export const CreateEvent = () => {
 
             <label>
                 Date
-                <input disabled={true} name={'date'} value={formatDate(event.date)}
-                       onChange={onChange<Event>(setEvent)}/>
+                <DatePicker selected={new Date(event.date)} onChange={onDateChange}/>
             </label>
             <br/>
             <label>
                 Activity
                 <select name={'activityId'} value={event.activityId} onChange={onChange<Event>(setEvent)}>
-                    <option disabled selected value={''}> -- select an option --</option>
+                    <option disabled selected value={''}>-- select an option --</option>
                     {activityOptions}
                 </select>
             </label>
             <br/>
-
-            {event.activityId && <button onClick={submit}>Submit</button>}
+            {isValid(event) && <button onClick={submit(event)}>Submit</button>}
         </>
     );
 };

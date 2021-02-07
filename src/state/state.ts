@@ -1,4 +1,7 @@
 import {atom} from 'recoil';
+import {recoilPersist} from 'recoil-persist';
+
+const {persistAtom} = recoilPersist();
 
 export interface Activity {
     id: string
@@ -14,15 +17,13 @@ export interface Event {
 const activities = atom<Activity[]>({
     key: 'activities',
     default: [],
-    // @ts-ignore
-    persistence_UNSTABLE: {type: true},
+    effects_UNSTABLE: [persistAtom]
 });
 
 const events = atom<Event[]>({
     key: 'events',
     default: [],
-    // @ts-ignore
-    persistence_UNSTABLE: {type: true},
+    effects_UNSTABLE: [persistAtom]
 });
 
 export const state = {
