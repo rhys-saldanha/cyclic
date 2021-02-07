@@ -1,25 +1,14 @@
-import {useRecoilState} from 'recoil';
-import {Activity, state} from '../state/state';
+import {useRecoilValue} from 'recoil';
+import {state} from '../state/state';
+import {formatDate} from '../state/utils';
+import {useGetActivity, useRemoveActivity, useRemoveEvent} from '../state/hooks';
 
 export const Calendar = () => {
-    const [activities, setActivities] = useRecoilState(state.activities);
-    const [events, setEvents] = useRecoilState(state.events);
-
-    const getActivity = (queryId: string): Activity => {
-        return activities.find(({id}) => queryId === id) || {name: '', id: ''};
-    };
-
-    const removeActivity = (activityId: string) => () => {
-        setActivities(activities.filter(({id}) => id !== activityId));
-    };
-
-    const removeEvent = (eventId: string) => () => {
-        setEvents(events.filter(({id}) => id !== eventId));
-    };
-
-    const formatDate = (date: string) => {
-        return new Date(date).toISOString().substring(0, 10);
-    };
+    const activities = useRecoilValue(state.activities);
+    const events = useRecoilValue(state.events);
+    const getActivity = useGetActivity();
+    const removeActivity = useRemoveActivity();
+    const removeEvent = useRemoveEvent();
 
     return (
         <>
@@ -37,14 +26,15 @@ export const Calendar = () => {
             </ul>
             <h3>Events</h3>
             <ul>
-                {events.map((event) => {
-                    return (
-                        <li key={event.id}
-                            onClick={removeEvent(event.id)}>
-                            {formatDate(event.date)} - {getActivity(event.activityId).name}
-                        </li>
-                    );
-                })}
+                {events
+                    .map((event) => {
+                        return (
+                            <li key={event.id}
+                                onClick={removeEvent(event.id)}>
+                                {formatDate(event.date)} - {getActivity(event.activityId).name}
+                            </li>
+                        );
+                    })}
             </ul>
         </>
     );

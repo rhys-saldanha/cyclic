@@ -3,17 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import {RecoilRoot} from 'recoil';
-import {recoilPersist} from 'recoil-persist';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {BrowserRouter} from 'react-router-dom';
 
-const {RecoilPersist, updateState} = recoilPersist();
 
 ReactDOM.render(
     <React.StrictMode>
-        <RecoilRoot initializeState={updateState}>
+        <RecoilRoot>
             <BrowserRouter>
-                <RecoilPersist/>
                 <CssBaseline/>
                 <App/>
             </BrowserRouter>
